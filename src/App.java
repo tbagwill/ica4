@@ -15,7 +15,7 @@ public class App {
     public static DecimalFormat df = new DecimalFormat("#.###");
 
     public static void main(String[] args) throws Exception {
-        // INIT STRING MATRICES 
+        // INIT STRING MATRICES
         Vector < Vector < String > > strMat1 = new Vector < Vector < String > > ();
         populateMatrix( strMat1, "string", size);
         previewMatrix(strMat1, "string");
@@ -48,14 +48,14 @@ public class App {
         // MATRIX FUNCTIONS PER TYPE
 
         // STRING
-        // RULESET: 
+        // RULESET:
         // add: concatenate | mult: intersection | asterate: scramble
         // matrixAdd(strMat1, strMat2, "str");
         matrixMult(strMat1, strMat2, "str");
         // matrixAsterate(strMat1, "str");
 
         // INTEGER
-        // RULESET: 
+        // RULESET:
         // add: add | mult: mult | asterate: replicate 3 times
         // matrixAdd(intMat1, intMat2, "int");
         // matrixMult(intMat1, intMat2, "int");
@@ -71,12 +71,12 @@ public class App {
     }
 
     public static void matrixAdd( Vector < Vector < String > > vect1, Vector < Vector < String > > vect2, String type ){
-        
+
         // Check dimensions
         if( vect1.size() != vect2.elementAt(0).size() ){
             throw new IllegalArgumentException();
         }
-        
+
         // Check type for `string`
         if( type.equalsIgnoreCase("string" ) || type.equalsIgnoreCase("str" ) ){
             // Base Rule: Concat strings
@@ -85,7 +85,7 @@ public class App {
                 C.add( new Vector ());
                 for( int j = 0; j < vect1.elementAt(i).size(); j++){
                     String str1 = vect1.elementAt(i).elementAt(j);
-                    String str2 = vect2.elementAt(i).elementAt(j); 
+                    String str2 = vect2.elementAt(i).elementAt(j);
                     ( ( Vector < String > ) C.elementAt(i) ).add( str1.concat(str2) );
                 }
             }
@@ -127,15 +127,16 @@ public class App {
             // Base Rule: Dot Product Combination
 
             // init temp strings
-            String str1 = "", str2 = "", str3 = "", str4 = "", str5 = "";
-            
+            String str1 = "", str2 = "", str3 = "", str4 = "";
+
             // C[i][j] += ( vect1[k][j] + vect2[i][k] )
+            C.add( new Vector ());
+            C.add( new Vector ());
             for( int i = 0; i < vect1.size(); i++ ){
                 // Add second dimension
-                C.add( new Vector ());
                 for( int j = 0; j < vect1.elementAt(i).size(); j++){
-                    str1 = vect1.elementAt(0).elementAt(j);
-                    str2 = vect2.elementAt(i).elementAt(0);
+                    str1 = vect1.elementAt(j).elementAt(0);
+                    str2 = vect2.elementAt(0).elementAt(i);
                     for(int k = 0; k < str1.length(); k++) {
                         char temp = str1.charAt(k);
                         if (str2.indexOf(temp) != -1 && str3.indexOf(temp) == -1) {
@@ -143,20 +144,19 @@ public class App {
                         }
                     }
 
-                    str1 = vect1.elementAt(1).elementAt(j);
-                    str2 = vect2.elementAt(i).elementAt(1);
+                    str1 = vect1.elementAt(j).elementAt(1);
+                    str2 = vect2.elementAt(1).elementAt(i);
                     for(int k = 0; k < str1.length(); k++) {
                         char temp = str1.charAt(k);
-                        if(str2.indexOf(temp) != -1 && str3.indexOf(temp) == -1) {
+                        if(str2.indexOf(temp) != -1 && str4.indexOf(temp) == -1) {
                             str4 = str4 + temp;
                         }
                     }
 
-                    str5 = str3.concat(str4);
-                    C.elementAt(i).add( str5 );
+                    C.elementAt(j).add( str3 + str4 );
+                    str3 = "";
                     str4 = "";
-                    str5 = "";
-                }       
+                }
             }
             // Check type for `integer`
         } else if ( type.equalsIgnoreCase( "integer" ) || type.equalsIgnoreCase( "int" ) ) {
@@ -204,7 +204,7 @@ public class App {
     }
 
     public static void matrixAsterate( Vector < Vector < String > > vect, String type ){
-        
+
         // Check type for `string`
         if( type.equalsIgnoreCase("string" ) || type.equalsIgnoreCase("str" ) ){
             // Base Rule: Replicate 3 times
@@ -218,14 +218,14 @@ public class App {
                     temp1 = vect.elementAt(i).elementAt(j);
 
                     temp2 = randomizeString( temp1 );
-                    
+
                     C.elementAt(i).add( temp2 );
                 }
             }
             // Check type for `integer`
         } else if( type.equalsIgnoreCase( "integer") || type.equalsIgnoreCase( "int" ) ){
             // Base Rule: Replicate 3 times
-            
+
             // init temp string
             String temp = "";
             for( int i = 0; i < vect.size(); i++ ){
@@ -302,7 +302,7 @@ public class App {
                     v.elementAt(i).add( strs[ random() ] );
                 }
             }
-        // Check type for `integer`
+            // Check type for `integer`
         } else if( type.equalsIgnoreCase( "integer") || type.equalsIgnoreCase( "int" ) ){
             for( int i = 0; i < size; i++ ){
                 v.add( new Vector < String > () );
@@ -310,7 +310,7 @@ public class App {
                     v.elementAt(i).add( ints[ random() ] );
                 }
             }
-        // Check type for `decimal`
+            // Check type for `decimal`
         } else if( type.equalsIgnoreCase( "decimal") || type.equalsIgnoreCase( "dec" ) ){
             for( int i = 0; i < size; i++ ){
                 v.add( new Vector < String > () );
@@ -364,7 +364,7 @@ public class App {
             String str1 = v.elementAt(x);
             String str2 = v.elementAt(y);
             v.set( x, str2 );
-            v.set( y, str1 ); 
+            v.set( y, str1 );
         }
 
         String scramble = "";
@@ -375,5 +375,5 @@ public class App {
 
         return scramble;
     }
-    
+
 }
